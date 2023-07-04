@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de Produtos</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="calculadora">
+    <h2>Calculadora de Produtos</h2>
+
+    <div class="produtos"></div>
+
+    <button class="btn-adicionar">Adicionar Produto</button>
+
+    <div class="frete">
+      <label>Frete:</label>
+      <input type="text" id="input-frete">
+    </div>
+
+    <div class="pagamento">
+      <label>Forma de Pagamento:</label>
+      <select id="select-pagamento">
+        <option value="Crédito">Crédito</option>
+        <option value="Débito">Débito</option>
+        <option value="Pix">Pix</option>
+        <option value="Transferência">Transferência</option>
+      </select>
+    </div>
+  
+    <div class="prazo">
+      <label>Prazo de Entrega (dias):</label>
+      <input type="text" id="input-prazo">
+    </div>
+
+    <div class="relatorio">
+      <h3>Relatório de Produtos:</h3>
+      <textarea id="relatorio-text" readonly></textarea>
+    </div>
+
+    <div class="mensagem">
+      <h3>Mensagem Padrão:</h3>
+      <textarea id="mensagem-text"></textarea>
+    </div>
+
+    <div id="quantidade-total"></div>
+
+    <script src="script.js"></script>
+  </div>
+</body>
+
+</html>
