@@ -150,7 +150,6 @@ class CalculadoraProdutos {
 
   atualizarMensagem() {
     const quantidade = this.quantidade_total;
-    const valorTotal = this.total.toFixed(2);
     const frete = parseFloat(this.inputFrete.value) || 0;
     const prazo = parseInt(this.inputPrazo.value) || 0;
     const opcaoPagamento = this.selectPagamento.value;
@@ -158,56 +157,59 @@ class CalculadoraProdutos {
   
     if (quantidade === 0) {
       mensagemContainer.textContent = 'Adicione produtos para visualizar a mensagem.';
-    } else {
-      let mensagemTexto = '';
+      return;
+    }
   
-      for (let i = 0; i < this.produtos.length; i++) {
-        const modelo = this.produtos[i].value;
-        const quantidade = parseInt(this.quantidades[i].value);
-        const desconto = this.descontos[i];
+    let mensagemTexto = '';
   
-        if (modelo in this.valores) {
-          const valorProduto = this.valores[modelo];
-          const descontoQuantidade = this.obterDescontoQuantidade(this.quantidade_total);
-          const descontoPagamento = this.obterDescontoPagamento();
-          const descontoTotal = descontoQuantidade + descontoPagamento;
-          const valorUnitario = valorProduto - (valorProduto * descontoTotal / 100);
-          const valorQuantidade = valorProduto - (valorProduto * descontoQuantidade / 100);
-          const valorUnitarioSemDesconto = valorProduto;
-          const valorTotal = quantidade * valorUnitario;
+    for (let i = 0; i < this.produtos.length; i++) {
+      const modelo = this.produtos[i].value;
+      const quantidade = parseInt(this.quantidades[i].value);
+      const desconto = this.descontos[i];
   
-          desconto.value = `${descontoTotal}%`;
-
-          if (descontoQuantidade > 0 && descontoPagamento > 0) {
-            mensagemTexto = `${quantidade} unidade(s) ${modelo} = ~R$${valorUnitarioSemDesconto.toFixed(2)}~ R$${valorUnitario.toFixed(2)} cada.\n`;
-          }  else if (descontoQuantidade > 0) {
-            mensagemTexto += `${quantidade} unidade(s) ${modelo} = ~R$${valorUnitarioSemDesconto.toFixed(2)}~ R$${valorQuantidade.toFixed(2)} cada.\n`;
-          } else if (descontoPagamento > 0) {
-            mensagemTexto += `${quantidade} unidade(s) ${modelo} = ~R$${valorUnitarioSemDesconto.toFixed(2)}~ R$${valorUnitario.toFixed(2)} cada.\n`;
-          } else {
-            mensagemTexto += `${quantidade} unidade(s) ${modelo} = R$${valorUnitarioSemDesconto.toFixed(2)} cada.\n`;
-          }
+      if (modelo in this.valores) {
+        const valorProduto = this.valores[modelo];
+        const descontoQuantidade = this.obterDescontoQuantidade(this.quantidade_total);
+        const descontoPagamento = this.obterDescontoPagamento();
+        const descontoTotal = descontoQuantidade + descontoPagamento;
+        const valorUnitario = valorProduto - (valorProduto * descontoTotal / 100);
+        const valorQuantidade = valorProduto - (valorProduto * descontoQuantidade / 100);
+        const valorUnitarioSemDesconto = valorProduto;
+        const valorTotal = quantidade * valorUnitario;
+  
+        desconto.value = `${descontoTotal}%`;
+  
+        if (descontoQuantidade > 0 && descontoPagamento > 0) {
+          mensagemTexto += `${quantidade} unidade(s) ${modelo} = ~R$${valorUnitarioSemDesconto.toFixed(2)}~ R$${valorUnitario.toFixed(2)} cada.\n`;
+        } else if (descontoQuantidade > 0) {
+          mensagemTexto += `${quantidade} unidade(s) ${modelo} = ~R$${valorUnitarioSemDesconto.toFixed(2)}~ R$${valorQuantidade.toFixed(2)} cada.\n`;
+        } else if (descontoPagamento > 0) {
+          mensagemTexto += `${quantidade} unidade(s) ${modelo} = ~R$${valorUnitarioSemDesconto.toFixed(2)}~ R$${valorUnitario.toFixed(2)} cada.\n`;
+        } else {
+          mensagemTexto += `${quantidade} unidade(s) ${modelo} = R$${valorUnitarioSemDesconto.toFixed(2)} cada.\n`;
         }
       }
-  
-      if (frete > 0) {
-        mensagemTexto += `Valor do frete: R$${frete.toFixed(2)}.\n`;
-      }
-  
-      mensagemTexto += `Valor total: R$${valorTotal}.\n`;
-  
-      if (opcaoPagamento === 'Pix' || opcaoPagamento === 'Transferência') {
-        mensagemTexto += `*Desconto de 5% mediante forma de pagamento via ${opcaoPagamento}.*\n`;
-      }
-  
-      if (prazo > 0) {
-        mensagemTexto += `Prazo de entrega: ${prazo} dias úteis.\n`;
-      }
-  
-      mensagemTexto += `Orçamento válido por 7 dias.`;
-  
-      mensagemContainer.textContent = mensagemTexto;
     }
+  
+    if (frete > 0) {
+      mensagemTexto += `Valor do frete: R$${frete.toFixed(2)}.\n`;
+    }
+  
+    const valorTotal = this.total.toFixed(2);
+  
+    mensagemTexto += `Valor total: R$${valorTotal}.\n`;
+  
+    if (opcaoPagamento === 'Pix' || opcaoPagamento === 'Transferência') {
+      mensagemTexto += `*Desconto de 5% já aplicado mediante forma de pagamento via ${opcaoPagamento}.*\n`;
+    }
+  
+    if (prazo > 0) {
+      mensagemTexto += `Prazo de entrega: ${prazo} dias úteis.\n`;
+    }
+  
+    mensagemTexto += `Orçamento válido por 7 dias.`;
+  
+    mensagemContainer.textContent = mensagemTexto;
   }  
   
   removerProduto(produtoContainer) {
